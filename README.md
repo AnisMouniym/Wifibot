@@ -1,2 +1,2 @@
 # Wifibot
-Projet Java 3A
+Projet Wifibot 3A
