@@ -35,12 +35,14 @@ void MyRobot::doConnect() {
         return;
     }
     TimerEnvoi->start(75);
+    this->isConnected = true;
 
 }
 
 void MyRobot::disConnect() {
     TimerEnvoi->stop();
     socket->close();
+    bool isConnected = false;
 }
 
 void MyRobot::connected() {
@@ -49,6 +51,7 @@ void MyRobot::connected() {
 
 void MyRobot::disconnected() {
     qDebug() << "disconnected...";
+
 }
 
 void MyRobot::bytesWritten(qint64 bytes) {

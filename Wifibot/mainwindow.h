@@ -16,13 +16,14 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+
 private slots:
     void on_Connect_clicked();
-
     void on_Disconnect_clicked();
+    void checkConnection();
 
 private:
     Ui::MainWindow *ui;
-    MyRobot Robot;
+    MyRobot *Robot;
 };
 #endif // MAINWINDOW_H

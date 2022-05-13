@@ -23,6 +23,7 @@ signals:
 public slots:
     void connected();
     void disconnected();
+    bool isConnected;
     void bytesWritten(qint64 bytes);
     void readyRead();
     void MyTimerSlot();
