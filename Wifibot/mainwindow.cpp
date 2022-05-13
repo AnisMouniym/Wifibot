@@ -14,14 +14,17 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-/*
-void MainWindow::on_pushButton_clicked()
-{
 
+
+
+
+void MainWindow::on_Connect_clicked()
+{
+    Robot.doConnect();
 }
 
-void MainWindow::on_pushButton_clicked()
+void MainWindow::on_Disconnect_clicked()
 {
-    qDebug()<< "ok";
+    Robot.disConnect();
 }
-*/
+

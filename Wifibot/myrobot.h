@@ -26,9 +26,6 @@ public slots:
     void bytesWritten(qint64 bytes);
     void readyRead();
     void MyTimerSlot();
-    void move(unsigned char dir, unsigned char rVelocity, unsigned char lVelocity);
-    void velocityRight(quint8 value);
-    void velocityLeft(quint8 value);
 
 private:
     QTcpSocket *socket;

@@ -14,7 +14,7 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="Connect">
     <property name="geometry">
      <rect>
       <x>260</x>
@@ -25,6 +25,19 @@
     </property>
     <property name="text">
      <string>connect</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="Disconnect">
+    <property name="geometry">
+     <rect>
+      <x>260</x>
+      <y>200</y>
+      <width>93</width>
+      <height>29</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>disconnect</string>
     </property>
    </widget>
   </widget>

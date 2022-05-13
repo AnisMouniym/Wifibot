@@ -17,9 +17,12 @@ public:
     ~MainWindow();
 
 private slots:
-    void on_pushButton_clicked();
+    void on_Connect_clicked();
+
+    void on_Disconnect_clicked();
 
 private:
     Ui::MainWindow *ui;
+    MyRobot Robot;
 };
 #endif // MAINWINDOW_H
