@@ -1,6 +1,5 @@
 #ifndef MYROBOT_H
 #define MYROBOT_H
-
 #include <QObject>
 #include <QTcpSocket>
 #include <QAbstractSocket>
@@ -29,6 +28,7 @@ public slots:
     void MyTimerSlot();
 
 private:
+
     QTcpSocket *socket;
     QTimer *TimerEnvoi;
 };

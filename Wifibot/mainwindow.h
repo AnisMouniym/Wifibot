@@ -19,8 +19,6 @@ public:
 
 
 private slots:
-    void on_Connect_clicked();
-    void on_Disconnect_clicked();
     void checkConnection();
 
 private:
