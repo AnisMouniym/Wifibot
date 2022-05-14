@@ -2,25 +2,25 @@
 #include "ui_mainwindow.h"
 #include "myrobot.h"
 #include "QtDebug"
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     Robot = new MyRobot();
-    this->setFixedSize(800,400);
+    this->setFixedSize(800,400); //setFixedSize(largeur,hauteur)
     ui->setupUi(this);
 
+
+//Bouton de connexion
     _connect = new QPushButton("Disconnected", this);
     _connect->setStyleSheet("QPushButton { background-color: red; font: bold 15px; border-radius: 15px; color: black}"
                             "QPushButton:pressed {background-color: rgb(200, 0, 0); border-style: inset;}");
-    _connect->setGeometry(QRect(250,10,300,35));
-
-
-
-
+    _connect->setGeometry(QRect(250,10,300,35)); // Qrect(x,y,largeur,hauteur)
     connect(_connect, SIGNAL(clicked()), this, SLOT(checkConnection()));
     connect(Robot, SIGNAL(updateUI(QByteArray)), this, SLOT(updateWindows(QByteArray)));
 }
+
 
 MainWindow::~MainWindow()
 {
@@ -29,6 +29,7 @@ MainWindow::~MainWindow()
 }
 
 
+//Etat de connexion et modification du boutton de connexion
 void MainWindow::checkConnection()
 {
     qDebug()<<"Test";

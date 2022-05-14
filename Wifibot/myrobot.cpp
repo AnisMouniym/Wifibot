@@ -19,7 +19,7 @@ MyRobot::MyRobot(QObject *parent) : QObject(parent) {
     connect(TimerEnvoi, SIGNAL(timeout()), this, SLOT(MyTimerSlot())); //Send data to wifibot timer
 }
 
-
+//Connexion
 int MyRobot::doConnect() {
     socket = new QTcpSocket(this); // socket creation
     connect(socket, SIGNAL(connected()),this, SLOT(connected()));
@@ -40,11 +40,13 @@ int MyRobot::doConnect() {
 
 }
 
+//Déconnexion
 void MyRobot::disConnect() {
     TimerEnvoi->stop();
     socket->close();
     this->isConnected = false;
 }
+
 
 void MyRobot::connected() {
     qDebug() << "connected..."; // Hey server, tell me about you.
@@ -55,9 +57,11 @@ void MyRobot::disconnected() {
 
 }
 
+
 void MyRobot::bytesWritten(qint64 bytes) {
     qDebug() << bytes << " bytes written...";
 }
+
 
 void MyRobot::readyRead() {
     qDebug() << "reading..."; // read the data from the socket
@@ -65,6 +69,7 @@ void MyRobot::readyRead() {
     emit updateUI(DataReceived);
     qDebug() << DataReceived[0] << DataReceived[1] << DataReceived[2];
 }
+
 
 void MyRobot::MyTimerSlot() {
     qDebug() << "Timer...";
