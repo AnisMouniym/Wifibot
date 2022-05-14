@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include "myrobot.h"
+#include <QPushButton>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -25,5 +26,6 @@ private slots:
 private:
     Ui::MainWindow *ui;
     MyRobot *Robot;
+    QPushButton *_connect;
 };
 #endif // MAINWINDOW_H

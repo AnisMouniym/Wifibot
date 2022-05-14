@@ -12,18 +12,18 @@ class MyRobot : public QObject {
     Q_OBJECT
 public:
     explicit MyRobot(QObject *parent = 0);
-    void doConnect();
+    int doConnect();
     void disConnect();
     QByteArray DataToSend;
     QByteArray DataReceived;
     QMutex Mutex;
+    bool isConnected;
 
 signals:
     void updateUI(const QByteArray Data);
 public slots:
     void connected();
     void disconnected();
-    bool isConnected;
     void bytesWritten(qint64 bytes);
     void readyRead();
     void MyTimerSlot();
