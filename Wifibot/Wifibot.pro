@@ -15,6 +15,7 @@ SOURCES += \
 
 HEADERS += \
     mainwindow.h \
+    move.h \
     myrobot.h
 
 FORMS += \
