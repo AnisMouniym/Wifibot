@@ -5,11 +5,11 @@
 #include <QPushButton>
 #include <QSlider>
 
-class MoveWidget : public QWidget
+class Move : public QWidget
 {
     Q_OBJECT
 public:
-    explicit MoveWidget(QWidget *parent = nullptr);
+    explicit Move(QWidget *parent = nullptr);
 private:
     QPushButton *_Up;
     QPushButton *_Down;
