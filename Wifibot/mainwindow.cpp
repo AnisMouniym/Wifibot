@@ -2,12 +2,14 @@
 #include "ui_mainwindow.h"
 #include "myrobot.h"
 #include "QtDebug"
+#include "move.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     Robot = new MyRobot();
+    movePanel = new Move(this);
     this->setFixedSize(800,400); //setFixedSize(largeur,hauteur)
     ui->setupUi(this);
 
@@ -19,6 +21,11 @@ MainWindow::MainWindow(QWidget *parent)
     _connect->setGeometry(QRect(250,10,300,35)); // Qrect(x,y,largeur,hauteur)
     connect(_connect, SIGNAL(clicked()), this, SLOT(checkConnection()));
     connect(Robot, SIGNAL(updateUI(QByteArray)), this, SLOT(updateWindows(QByteArray)));
+
+// Connexion avec les sliders
+    connect(movePanel, SIGNAL(updateMove(unsigned char, unsigned char, unsigned char)), Robot, SLOT(move(unsigned char,unsigned char,unsigned char)));
+    connect(movePanel, SIGNAL(updateVelocityRight(unsigned char)), Robot, SLOT(velocityRight(unsigned char)));
+    connect(movePanel, SIGNAL(updateVelocityLeft(unsigned char)), Robot, SLOT(velocityLeft(unsigned char)));
 }
 
 
@@ -26,6 +33,7 @@ MainWindow::~MainWindow()
 {
     delete ui;
     delete Robot;
+    delete movePanel;
 }
 
 

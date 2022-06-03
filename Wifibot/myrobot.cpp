@@ -63,6 +63,35 @@ void MyRobot::bytesWritten(qint64 bytes) {
 }
 
 
+// Mise à jours des octets pour le déplacement du robot (Update Direction + Vitesse)
+void MyRobot::move(unsigned char dir, unsigned char rVelocity, unsigned char lVelocity)
+{
+    qDebug()<<dir;
+    while(Mutex.tryLock());
+    this->DataToSend[2] = lVelocity;
+    this->DataToSend[4] = rVelocity;
+    switch(dir){
+    case 0:
+        this->DataToSend[6] = 0b01010000; // Avant
+        break;
+    case 1:
+        this->DataToSend[6] = 0b00010000; // G
+        break;
+    case 2:
+        this->DataToSend[6] = 0b01000000; // D
+        break;
+    case 3:
+        this->DataToSend[6] = 0b00000000; // Arr
+        break;
+    default:
+        this->DataToSend[2] = 0; // Vitesse  à 0
+        this->DataToSend[4] = 0; // Vitesse  à 0
+        break;
+    }
+    Mutex.unlock();
+}
+
+
 void MyRobot::readyRead() {
     qDebug() << "reading..."; // read the data from the socket
     DataReceived = socket->readAll();
@@ -78,3 +107,33 @@ void MyRobot::MyTimerSlot() {
     Mutex.unlock();
 }
 
+// Mise à jour de la vitesse
+void MyRobot::velocityRight(quint8 value)
+{
+    while(Mutex.tryLock());
+    this->DataToSend[4] = value;
+    Mutex.unlock();
+}
+void MyRobot::velocityLeft(quint8 value)
+{
+    while(Mutex.tryLock());
+    this->DataToSend[2] = value;
+    Mutex.unlock();
+}
+
+// Fonction de calcul d'erreur pour les octets 8-9, la valeur de retour est non signée
+quint16 MyRobot::crc16(unsigned int pos){
+    unsigned char *data = (unsigned char*)DataToSend.constData();
+    quint16 crc = 0xFFFF;
+    quint16 Polynome = 0xA001;
+    quint16 Parity = 0;
+    for(; pos < (unsigned int)DataToSend.length(); pos++){
+        crc ^= *(data+pos);
+        for (unsigned int CptBit = 0; CptBit <= 7 ; CptBit++){
+            Parity= crc;
+            crc >>= 1;
+            if (Parity%2 == true) crc ^= Polynome;
+        }
+    }
+    return crc;
+}

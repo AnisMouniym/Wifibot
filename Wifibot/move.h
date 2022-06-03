@@ -17,8 +17,8 @@ private:
     QPushButton *_Right;
     QPushButton *_Stop;
 
-    QSlider *_leftSlider;
-    QSlider *_rightSlider;
+    QSlider *leftSlider;
+    QSlider *rightSlider;
 
 
     void setButton(QPushButton *bouton, QRect Geometry, QString chemin);
@@ -29,8 +29,8 @@ private:
         void moveRight();
         void moveStop();
 
-        void rightSlider(const int data);
-        void leftSlider(const int data);
+        void _rightSlider(const int data);
+        void _leftSlider(const int data);
     signals:
         void updateMove(const unsigned char data, const unsigned char rVelocity, const unsigned char lVelocity);
         void updateVelocityLeft(const unsigned char data);
