@@ -17,6 +17,7 @@ SOURCES += \
 
 HEADERS += \
     camera.h \
+    dir.h \
     mainwindow.h \
     move.h \
     myrobot.h
