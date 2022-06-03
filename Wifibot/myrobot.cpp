@@ -20,6 +20,7 @@ MyRobot::MyRobot(QObject *parent) : QObject(parent) {
 
 // setup signal and slot
     connect(TimerEnvoi, SIGNAL(timeout()), this, SLOT(MyTimerSlot())); //Send data to wifibot timer
+    this->isConnected = false;
 }
 
 //Connexion
@@ -93,6 +94,8 @@ void MyRobot::move(unsigned char dir, unsigned char rVelocity, unsigned char lVe
     }
     Mutex.unlock();
 }
+
+
 
 
 void MyRobot::readyRead() {

@@ -28,7 +28,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(Robot, SIGNAL(updateUI(QByteArray)), this, SLOT(updateWindows(QByteArray)));
 
 // Connexion avec les sliders
-    connect(movePanel, SIGNAL(updateMove(unsigned char, unsigned char, unsigned char)), Robot, SLOT(move(unsigned char,unsigned char,unsigned char)));
+    connect(movePanel, SIGNAL(updateMove(unsigned char, unsigned char, unsigned char)), Robot, SLOT(move(unsigned char, unsigned char, unsigned char)));
     connect(movePanel, SIGNAL(updateVelocityRight(unsigned char)), Robot, SLOT(velocityRight(unsigned char)));
     connect(movePanel, SIGNAL(updateVelocityLeft(unsigned char)), Robot, SLOT(velocityLeft(unsigned char)));
 

@@ -25,6 +25,7 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     void updateBattery(quint8 battery);
+    void updateIRSensor(quint8 lFront, quint8 rFront, quint8 back);
 
 
 private slots:
@@ -39,5 +40,11 @@ private:
     Camera *camera;
 //    QWebEngineView* video;
     QLCDNumber *lcdBattery;
+
+    QPushButton *lFrontSensor;
+    QPushButton *rFrontSensor;
+    QPushButton *backSensor;
+
+    static void updateSensorDisplay(QPushButton *button, quint8 value);
 };
 #endif // MAINWINDOW_H
