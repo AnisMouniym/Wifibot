@@ -14,8 +14,11 @@ MyRobot::MyRobot(QObject *parent) : QObject(parent) {
     DataToSend[7] = 0x0;
     DataToSend[8] = 0x0;
     DataReceived.resize(21);
+
+// Creation d'un timer pour l'emission des données à intervalle régulier
     TimerEnvoi = new QTimer();
-    // setup signal and slot
+
+// setup signal and slot
     connect(TimerEnvoi, SIGNAL(timeout()), this, SLOT(MyTimerSlot())); //Send data to wifibot timer
 }
 
