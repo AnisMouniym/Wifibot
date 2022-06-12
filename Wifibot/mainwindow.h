@@ -29,21 +29,40 @@ public:
 
 
 private slots:
-    void checkConnection();
+//    void checkConnection();
     void updateWindows(const QByteArray);
+
+    void on_forward_pressed();
+
+    void on_forward_released();
+
+    void on_right_pressed();
+
+    void on_right_released();
+
+    void on_back_pressed();
+
+    void on_back_released();
+
+    void on_left_pressed();
+
+    void on_left_released();
+
+    void on_connexion_clicked();
 
 private:
     Ui::MainWindow *ui;
     MyRobot *Robot;
-    QPushButton *_connect;
+//    QPushButton *_connect;
     Move *movePanel;
     Camera *camera;
 //    QWebEngineView* video;
     QLCDNumber *lcdBattery;
 
-    QPushButton *lFrontSensor;
-    QPushButton *rFrontSensor;
-    QPushButton *backSensor;
+//    QPushButton *lFrontSensor;
+//    QPushButton *rFrontSensor;
+//    QPushButton *backSensor;
+
 
     static void updateSensorDisplay(QPushButton *button, quint8 value);
 };

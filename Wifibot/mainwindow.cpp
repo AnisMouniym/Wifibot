@@ -1,7 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QRect>
-#include "myrobot.h"
 #include "QtDebug"
 #include "move.h"
 
@@ -18,21 +17,12 @@ MainWindow::MainWindow(QWidget *parent)
     this->setFixedSize(800,400); //setFixedSize(largeur,hauteur)
     ui->setupUi(this);
 
-
-//Bouton de connexion
-    _connect = new QPushButton("Disconnected", this);
-    _connect->setStyleSheet("QPushButton { background-color: red; font: bold 15px; border-radius: 15px; color: black}"
-                            "QPushButton:pressed {background-color: rgb(200, 0, 0); border-style: inset;}");
-    _connect->setGeometry(QRect(250,10,300,35)); // Qrect(x,y,largeur,hauteur)
-    connect(_connect, SIGNAL(clicked()), this, SLOT(checkConnection()));
-    connect(Robot, SIGNAL(updateUI(QByteArray)), this, SLOT(updateWindows(QByteArray)));
-
 // Connexion avec les sliders
-    connect(movePanel, SIGNAL(updateMove(unsigned char, unsigned char, unsigned char)), Robot, SLOT(move(unsigned char, unsigned char, unsigned char)));
-    connect(movePanel, SIGNAL(updateVelocityRight(unsigned char)), Robot, SLOT(velocityRight(unsigned char)));
-    connect(movePanel, SIGNAL(updateVelocityLeft(unsigned char)), Robot, SLOT(velocityLeft(unsigned char)));
+//    connect(movePanel, SIGNAL(updateMove(unsigned char,unsigned char,unsigned char)), Robot, SLOT(move(unsigned char,unsigned char,unsigned char)));
+//    connect(movePanel, SIGNAL(updateVelocityRight(unsigned char)), Robot, SLOT(velocityRight(unsigned char)));
+//    connect(movePanel, SIGNAL(updateVelocityLeft(unsigned char)), Robot, SLOT(velocityLeft(unsigned char)));
 
-// affichage camera (a finir)
+// affichage camera (à faire)
 
 // Affichage de la batterie
         lcdBattery = new QLCDNumber(this);
@@ -76,23 +66,64 @@ MainWindow::~MainWindow()
     delete camera;
 }
 
-
-//Etat de connexion et modification du boutton de connexion
-void MainWindow::checkConnection()
+void MainWindow::on_forward_pressed()
 {
-    qDebug()<<"Test";
-    if(!Robot->isConnected)
-    {
-        if(Robot->doConnect()){
-            _connect->setStyleSheet("QPushButton { background-color: red; border-style: none; padding: 40px ; font: bold 20px; border-radius: 10px; color: black}"
-                                    "QPushButton:pressed {background-color: rgb(200, 0, 0); border-style: inset;}");
+    Robot->move(Direction::FORWARD, 0x7F);
+}
+
+
+void MainWindow::on_forward_released()
+{
+    Robot->move();
+}
+
+
+void MainWindow::on_right_pressed()
+{
+    Robot->move(Direction::RIGHT, 0x7F);
+}
+
+
+void MainWindow::on_right_released()
+{
+    Robot->move();
+}
+
+
+void MainWindow::on_back_pressed()
+{
+    Robot->move(Direction::BACKWARD, 0x7F);
+}
+
+
+void MainWindow::on_back_released()
+{
+    Robot->move();
+}
+
+
+void MainWindow::on_left_pressed()
+{
+    Robot->move(Direction::LEFT, 0x7F);
+}
+
+
+void MainWindow::on_left_released()
+{
+    Robot->move();
+}
+
+
+void MainWindow::on_connexion_clicked()
+{
+    if(Robot->isConnected) {
+        Robot->disconnected();
+        ui->connexion->setText("Déconnecté");
     }
-    }
-    else
-    {
-        Robot->disConnect();
-        _connect->setText("Connected");
-        _connect->setStyleSheet("QPushButton { background-color: green; border-style: none; padding: 40px ; font: bold 20px; border-radius: 10px; color: black}"
-                                "QPushButton:pressed {background-color: rgb(200, 0, 0); border-style: inset;}");
+    else {
+        if (Robot->doConnect()) {
+                    ui->connexion->setText("Connecté");
+
+        }
     }
 }

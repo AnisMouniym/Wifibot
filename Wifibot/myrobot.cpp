@@ -6,13 +6,17 @@ MyRobot::MyRobot(QObject *parent) : QObject(parent) {
     DataToSend.resize(9);
     DataToSend[0] = 0xFF;
     DataToSend[1] = 0x07;
-    DataToSend[2] = 0x0;
-    DataToSend[3] = 0x0;
-    DataToSend[4] = 0x0;
-    DataToSend[5] = 0x0;
-    DataToSend[6] = 0x0;
-    DataToSend[7] = 0x0;
-    DataToSend[8] = 0x0;
+    DataToSend[2] = 0x00;
+    DataToSend[3] = 0x00;
+    DataToSend[4] = 0x00;
+    DataToSend[5] = 0x00;
+    DataToSend[6] = 0x00;
+
+    quint16 crc = crc16(DataToSend, 7);
+
+    DataToSend[7] = crc;
+    DataToSend[8] = (crc >> 8);
+
     DataReceived.resize(21);
 
 // Creation d'un timer pour l'emission des données à intervalle régulier
@@ -20,7 +24,6 @@ MyRobot::MyRobot(QObject *parent) : QObject(parent) {
 
 // setup signal and slot
     connect(TimerEnvoi, SIGNAL(timeout()), this, SLOT(MyTimerSlot())); //Send data to wifibot timer
-    this->isConnected = false;
 }
 
 //Connexion
@@ -36,12 +39,11 @@ int MyRobot::doConnect() {
     // we need to wait...
     if(!socket->waitForConnected(5000)) {
         qDebug() << "Error: " << socket->errorString();
-        return EXIT_FAILURE;
+        return false;
     }
     TimerEnvoi->start(75);
     this->isConnected = true;
-    return EXIT_SUCCESS;
-
+    return true;
 }
 
 //Déconnexion
@@ -68,30 +70,34 @@ void MyRobot::bytesWritten(qint64 bytes) {
 
 
 // Mise à jours des octets pour le déplacement du robot (Update Direction + Vitesse)
-void MyRobot::move(unsigned char dir, unsigned char rVelocity, unsigned char lVelocity)
+void MyRobot::move(Direction direction, quint8 velocity)
 {
-    qDebug()<<dir;
     while(Mutex.tryLock());
-    this->DataToSend[2] = lVelocity;
-    this->DataToSend[4] = rVelocity;
-    switch(dir){
-    case 0:
-        this->DataToSend[6] = 0b01010000; // Avant
+    this->DataToSend[2] = velocity;
+    this->DataToSend[4] = velocity;
+    switch(direction){
+    case Direction::FORWARD:
+        this->DataToSend[6] = 0b01010000;
         break;
-    case 1:
-        this->DataToSend[6] = 0b00010000; // G
+    case Direction::LEFT:
+        this->DataToSend[6] = 0b00010000;
         break;
-    case 2:
-        this->DataToSend[6] = 0b01000000; // D
+    case Direction::RIGHT:
+        this->DataToSend[6] = 0b01000000;
         break;
-    case 3:
-        this->DataToSend[6] = 0b00000000; // Arr
+    case Direction::BACKWARD:
+        this->DataToSend[6] = 0b00000000;
         break;
     default:
-        this->DataToSend[2] = 0; // Vitesse  à 0
-        this->DataToSend[4] = 0; // Vitesse  à 0
+        this->DataToSend[2] = 0;
+        this->DataToSend[4] = 0;
+        this->DataToSend[6] = 0b01010000;
         break;
     }
+    quint16 crc = crc16(DataToSend, 7);
+
+    DataToSend[7] = crc;
+    DataToSend[8] = (crc >> 8);
     Mutex.unlock();
 }
 
@@ -102,7 +108,7 @@ void MyRobot::readyRead() {
     qDebug() << "reading..."; // read the data from the socket
     DataReceived = socket->readAll();
     emit updateUI(DataReceived);
-    qDebug() << DataReceived[0] << DataReceived[1] << DataReceived[2];
+//    qDebug() << DataReceived[0] << DataReceived[1] << DataReceived[2];
 }
 
 
@@ -114,31 +120,33 @@ void MyRobot::MyTimerSlot() {
 }
 
 // Mise à jour de la vitesse
-void MyRobot::velocityRight(quint8 value)
-{
-    while(Mutex.tryLock());
-    this->DataToSend[4] = value;
-    Mutex.unlock();
-}
-void MyRobot::velocityLeft(quint8 value)
-{
-    while(Mutex.tryLock());
-    this->DataToSend[2] = value;
-    Mutex.unlock();
-}
+//void MyRobot::velocityRight(quint8 value)
+//{
+//    while(Mutex.tryLock());
+//    this->DataToSend[4] = value;
+//    Mutex.unlock();
+//}
+//void MyRobot::velocityLeft(quint8 value)
+//{
+//    while(Mutex.tryLock());
+//    this->DataToSend[2] = value;
+//    Mutex.unlock();
+//}
 
 // Fonction de calcul d'erreur pour les octets 8-9, la valeur de retour est non signée
-quint16 MyRobot::crc16(unsigned int pos){
-    unsigned char *data = (unsigned char*)DataToSend.constData();
+quint16 MyRobot::crc16(QByteArray adresseTab, unsigned int tailleMax) {
     quint16 crc = 0xFFFF;
-    quint16 Polynome = 0xA001;
-    quint16 Parity = 0;
-    for(; pos < (unsigned int)DataToSend.length(); pos++){
-        crc ^= *(data+pos);
-        for (unsigned int CptBit = 0; CptBit <= 7 ; CptBit++){
-            Parity= crc;
+    quint16 polynome = 0xA001;
+    quint16 parity =0;
+    unsigned int cptBit = 0;
+
+    for(auto it = adresseTab.begin()+1; it != adresseTab.begin()+tailleMax; ++it) {
+        crc ^= *it;
+        for(cptBit = 0; cptBit <= 7; ++cptBit) {
+            parity = crc;
             crc >>= 1;
-            if (Parity%2 == true) crc ^= Polynome;
+            if(parity%2 == true)
+                crc ^= polynome;
         }
     }
     return crc;

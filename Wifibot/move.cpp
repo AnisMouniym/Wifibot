@@ -56,6 +56,7 @@ Move::Move(QWidget *parent)
     void Move::moveUp()
     {
  // Emission d'un signal de modification de direction
+        qDebug() << "ca va";
         emit updateMove(0, rightSlider->value(), leftSlider->value());
     }
 
