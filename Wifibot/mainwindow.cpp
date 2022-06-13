@@ -9,8 +9,6 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     Robot = new MyRobot();
-    movePanel = new Move(this);
-    movePanel->move(QPoint(10,140));
     camera = new Camera("http://192.168.1.106:8080", this);
     camera->move(QPoint(560,140));
 
@@ -62,68 +60,68 @@ MainWindow::~MainWindow()
 {
     delete ui;
     delete Robot;
-    delete movePanel;
     delete camera;
 }
 
-void MainWindow::on_forward_pressed()
+//Mise en place des bouttons
+
+void MainWindow::on_Forward_pressed()
 {
     Robot->move(Direction::FORWARD, 0x7F);
 }
 
 
-void MainWindow::on_forward_released()
+void MainWindow::on_Forward_released()
 {
     Robot->move();
 }
 
 
-void MainWindow::on_right_pressed()
+void MainWindow::on_Right_pressed()
 {
     Robot->move(Direction::RIGHT, 0x7F);
 }
 
 
-void MainWindow::on_right_released()
+void MainWindow::on_Right_released()
 {
     Robot->move();
 }
 
 
-void MainWindow::on_back_pressed()
+void MainWindow::on_Back_pressed()
 {
     Robot->move(Direction::BACKWARD, 0x7F);
 }
 
 
-void MainWindow::on_back_released()
+void MainWindow::on_Back_released()
 {
     Robot->move();
 }
 
 
-void MainWindow::on_left_pressed()
+void MainWindow::on_Left_pressed()
 {
     Robot->move(Direction::LEFT, 0x7F);
 }
 
 
-void MainWindow::on_left_released()
+void MainWindow::on_Left_released()
 {
     Robot->move();
 }
 
-
-void MainWindow::on_connexion_clicked()
+//Boutton de connexion
+void MainWindow::on_Connexion_clicked()
 {
     if(Robot->isConnected) {
-        Robot->disconnected();
-        ui->connexion->setText("Déconnecté");
+        Robot->disConnect();
+        ui->Connexion->setText("Déconnecté");
     }
-    else {
-        if (Robot->doConnect()) {
-                    ui->connexion->setText("Connecté");
 
-        }
+    else {
+        Robot->doConnect();
+        ui->Connexion->setText("Connecté");
     }
 }

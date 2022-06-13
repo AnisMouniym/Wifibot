@@ -108,7 +108,7 @@ void MyRobot::readyRead() {
     qDebug() << "reading..."; // read the data from the socket
     DataReceived = socket->readAll();
     emit updateUI(DataReceived);
-//    qDebug() << DataReceived[0] << DataReceived[1] << DataReceived[2];
+    qDebug() << DataReceived[0] << DataReceived[1];
 }
 
 
@@ -118,20 +118,6 @@ void MyRobot::MyTimerSlot() {
     socket->write(DataToSend);
     Mutex.unlock();
 }
-
-// Mise à jour de la vitesse
-//void MyRobot::velocityRight(quint8 value)
-//{
-//    while(Mutex.tryLock());
-//    this->DataToSend[4] = value;
-//    Mutex.unlock();
-//}
-//void MyRobot::velocityLeft(quint8 value)
-//{
-//    while(Mutex.tryLock());
-//    this->DataToSend[2] = value;
-//    Mutex.unlock();
-//}
 
 // Fonction de calcul d'erreur pour les octets 8-9, la valeur de retour est non signée
 quint16 MyRobot::crc16(QByteArray adresseTab, unsigned int tailleMax) {
