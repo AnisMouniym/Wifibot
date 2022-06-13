@@ -66,6 +66,8 @@ MainWindow::~MainWindow()
     delete camera;
 }
 
+//Mise en place des bouttons
+
 void MainWindow::on_forward_pressed()
 {
     Robot->move(Direction::FORWARD, 0x7F);
@@ -113,17 +115,15 @@ void MainWindow::on_left_released()
     Robot->move();
 }
 
-
+//Boutton de connexion
 void MainWindow::on_connexion_clicked()
 {
     if(Robot->isConnected) {
-        Robot->disconnected();
+        Robot->disConnect();
         ui->connexion->setText("Déconnecté");
     }
     else {
-        if (Robot->doConnect()) {
-                    ui->connexion->setText("Connecté");
-
-        }
+        Robot->doConnect();
+        ui->connexion->setText("Connecté");
     }
 }
