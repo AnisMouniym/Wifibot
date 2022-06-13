@@ -116,11 +116,16 @@ void MainWindow::on_Connexion_clicked()
 {
     if(Robot->isConnected) {
         Robot->disConnect();
-        ui->Connexion->setText("Déconnecté");
+    }
+    else {
+        if(!Robot->isConnected){
+        Robot->doConnect();        }
     }
 
+    if (Robot->isConnected) {
+        ui->Connexion->setText("Connected");
+    }
     else {
-        Robot->doConnect();
-        ui->Connexion->setText("Connecté");
+        ui->Connexion->setText("Disconnected");
     }
 }

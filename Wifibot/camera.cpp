@@ -38,8 +38,4 @@ void Camera::request(QString direction, QString sens){
     manager->get(requete);
 }
 
-void Camera::setButton(QPushButton *bouton, QRect Geometry, QString chemin){
-    bouton->setIcon(QIcon(chemin));
-    bouton->setGeometry(Geometry);
-}
 

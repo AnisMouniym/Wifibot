@@ -1,6 +1,5 @@
-// myrobot.cpp
-
 #include "myrobot.h"
+
 
 MyRobot::MyRobot(QObject *parent) : QObject(parent) {
     DataToSend.resize(9);
@@ -38,11 +37,9 @@ int MyRobot::doConnect() {
     socket->connectToHost("192.168.1.106", 15020); // connection to wifibot
     // we need to wait...
     if(!socket->waitForConnected(5000)) {
-        qDebug() << "Error: " << socket->errorString();
-        return false;
+        qDebug() << "Error: " << socket->errorString();        return false;
     }
     TimerEnvoi->start(75);
-    this->isConnected = true;
     return true;
 }
 
@@ -50,15 +47,17 @@ int MyRobot::doConnect() {
 void MyRobot::disConnect() {
     TimerEnvoi->stop();
     socket->close();
-    this->isConnected = false;
+
 }
 
 
 void MyRobot::connected() {
+    this->isConnected = true;
     qDebug() << "connected..."; // Hey server, tell me about you.
 }
 
 void MyRobot::disconnected() {
+    this->isConnected = false;
     qDebug() << "disconnected...";
 
 }
