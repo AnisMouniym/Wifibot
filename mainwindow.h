@@ -1,0 +1,69 @@
+#ifndef MAINWINDOW_H
+#define MAINWINDOW_H
+#include <QMainWindow>
+#include <QLayout>
+#include <QGridLayout>
+#include <QProgressBar>
+#include <QLCDNumber>
+//#include <QWebEngineView>
+#include <QSlider>
+#include <QPushButton>
+#include <QLabel>
+#include "myrobot.h"
+#include "move.h"
+#include "camera.h"
+
+QT_BEGIN_NAMESPACE
+namespace Ui { class MainWindow; }
+QT_END_NAMESPACE
+
+class MainWindow : public QMainWindow
+{
+    Q_OBJECT
+
+public:
+    MainWindow(QWidget *parent = nullptr);
+    ~MainWindow();
+    void updateBattery(quint8 battery);
+    void updateIRSensor(quint8 lFront, quint8 rFront, quint8 back);
+
+
+private slots:
+//    void checkConnection();
+    void updateWindows(const QByteArray);
+
+    void on_forward_pressed();
+
+    void on_forward_released();
+
+    void on_right_pressed();
+
+    void on_right_released();
+
+    void on_back_pressed();
+
+    void on_back_released();
+
+    void on_left_pressed();
+
+    void on_left_released();
+
+    void on_connexion_clicked();
+
+private:
+    Ui::MainWindow *ui;
+    MyRobot *Robot;
+//    QPushButton *_connect;
+    Move *movePanel;
+    Camera *camera;
+//    QWebEngineView* video;
+    QLCDNumber *lcdBattery;
+
+//    QPushButton *lFrontSensor;
+//    QPushButton *rFrontSensor;
+//    QPushButton *backSensor;
+
+
+    static void updateSensorDisplay(QPushButton *button, quint8 value);
+};
+#endif // MAINWINDOW_H
