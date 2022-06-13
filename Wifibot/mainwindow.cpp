@@ -2,7 +2,6 @@
 #include "ui_mainwindow.h"
 #include <QRect>
 #include "QtDebug"
-#include "move.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)

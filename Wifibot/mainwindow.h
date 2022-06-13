@@ -10,7 +10,6 @@
 #include <QPushButton>
 #include <QLabel>
 #include "myrobot.h"
-#include "move.h"
 #include "camera.h"
 
 QT_BEGIN_NAMESPACE
