@@ -1,4 +1,5 @@
 #include "camera.h"
+//#include <QWebEngineView>
 
 Camera::Camera(QString url, QWidget *parent)
     : QWidget{parent}

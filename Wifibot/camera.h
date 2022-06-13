@@ -5,10 +5,6 @@
 #include <QNetworkRequest>
 #include <QPushButton>
 
-/*
-*  Creation d'un groupe de 4 boutons pour le déplacement de la caméra.
-*/
-
 class Camera : public QWidget
 {
     Q_OBJECT

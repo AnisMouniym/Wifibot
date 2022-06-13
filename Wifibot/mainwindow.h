@@ -32,29 +32,28 @@ private slots:
 //    void checkConnection();
     void updateWindows(const QByteArray);
 
-    void on_forward_pressed();
+    void on_Forward_pressed();
 
-    void on_forward_released();
+    void on_Forward_released();
 
-    void on_right_pressed();
+    void on_Right_pressed();
 
-    void on_right_released();
+    void on_Right_released();
 
-    void on_back_pressed();
+    void on_Back_pressed();
 
-    void on_back_released();
+    void on_Back_released();
 
-    void on_left_pressed();
+    void on_Left_pressed();
 
-    void on_left_released();
+    void on_Left_released();
 
-    void on_connexion_clicked();
+    void on_Connexion_clicked();
 
 private:
     Ui::MainWindow *ui;
     MyRobot *Robot;
 //    QPushButton *_connect;
-    Move *movePanel;
     Camera *camera;
 //    QWebEngineView* video;
     QLCDNumber *lcdBattery;
