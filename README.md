@@ -17,3 +17,14 @@ Anis Mouniym && Max Bonnici
 
 2ème version
 ![Trello version 2](https://user-images.githubusercontent.com/95021980/174004769-30025323-a994-4b06-b2e0-142e6813724e.PNG)
+
+
+
+
+## Versioning
+#### Utilisation de Github
+
+Utilisation de Github fréquente avec une explication précise pour chaque commit.
+
+Le code est explicite avec des commentaires fréquent.
+
