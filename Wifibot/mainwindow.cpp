@@ -9,7 +9,6 @@ MainWindow::MainWindow(QWidget *parent)
 {
     Robot = new MyRobot();
     camera = new Camera("http://192.168.1.106:8080", this);
-    camera->move(QPoint(560,140));
 
     this->setFixedSize(1073,625); //setFixedSize(largeur,hauteur)
     ui->setupUi(this);
@@ -48,7 +47,7 @@ void MainWindow::updateSpeed(QByteArray data) {
 
     QString textSpeed = QString::number(speed) + " m/s";
     ui->speed->setText(textSpeed);
-    //qDebug() << "Speed: " << speed;
+    qDebug() << "Speed: " << speed;
 }
 
 //Actualisation des capteurs de position
@@ -102,7 +101,8 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_Forward_pressed()
 {
-    Robot->move(Direction::FORWARD, 0x7F);
+    Robot->move(Direction::FORWARD,ui->setSpeed->value());
+    qDebug() << ui->setSpeed->value();
 }
 
 
@@ -114,7 +114,9 @@ void MainWindow::on_Forward_released()
 
 void MainWindow::on_Right_pressed()
 {
-    Robot->move(Direction::RIGHT, 0x7F);
+    Robot->move(Direction::RIGHT, ui->setSpeed->value());
+    qDebug() << ui->setSpeed->value();
+
 }
 
 
@@ -126,7 +128,9 @@ void MainWindow::on_Right_released()
 
 void MainWindow::on_Back_pressed()
 {
-    Robot->move(Direction::BACKWARD, 0x7F);
+    Robot->move(Direction::BACKWARD, ui->setSpeed->value());
+    qDebug() << ui->setSpeed->value();
+
 }
 
 
@@ -138,7 +142,9 @@ void MainWindow::on_Back_released()
 
 void MainWindow::on_Left_pressed()
 {
-    Robot->move(Direction::LEFT, 0x7F);
+    Robot->move(Direction::LEFT, ui->setSpeed->value());
+    qDebug() << ui->setSpeed->value();
+
 }
 
 
@@ -147,6 +153,28 @@ void MainWindow::on_Left_released()
     Robot->move();
 }
 
+void MainWindow::on_Camera_Haut_clicked()
+{
+    camera->move(0);
+}
+
+
+void MainWindow::on_Camera_Droite_clicked()
+{
+    camera->move(2);
+}
+
+
+void MainWindow::on_Camera_Bas_clicked()
+{
+    camera->move(3);
+}
+
+
+void MainWindow::on_Camera_Gauche_clicked()
+{
+    camera->move(1);
+}
 //Boutton de connexion
 void MainWindow::on_Connexion_clicked()
 {
@@ -187,3 +215,4 @@ Direction MainWindow::toDirection(double x, double y) {
         return Direction::FORWARD_LEFT;
     else return Direction::NONE;
 }
+

@@ -49,6 +49,14 @@ private slots:
 
     void on_Connexion_clicked();
 
+    void on_Camera_Haut_clicked();
+
+    void on_Camera_Droite_clicked();
+
+    void on_Camera_Bas_clicked();
+
+    void on_Camera_Gauche_clicked();
+
 private:
     Ui::MainWindow *ui;
     MyRobot *Robot;

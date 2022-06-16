@@ -11,31 +11,24 @@ Camera::Camera(QString url, QWidget *parent)
 
 }
 
-void Camera::MoveUp(){
-    request("53", "-200");
+void Camera::move(int a){
+    QNetworkAccessManager *manager = new QNetworkAccessManager();
+    switch(a){
+    case 0: //haut
+        manager->get(QNetworkRequest(QUrl("http://192.168.1.106:8080/?action=command&dest=0&plugin=0&id=10094853&group=1&value=-200")));
+        break;
+    case 1: //gauche
+        manager->get(QNetworkRequest(QUrl("http://192.168.1.106:8080/?action=command&dest=0&plugin=0&id=10094852&group=1&value=200")));
+        break;
+    case 2: //bas
+        manager->get(QNetworkRequest(QUrl("http://192.168.1.106:8080/?action=command&dest=0&plugin=0&id=10094852&group=1&value=-200")));
+        break;
+    case 3: //droite
+        manager->get(QNetworkRequest(QUrl("http://192.168.1.106:8080/?action=command&dest=0&plugin=0&id=10094853&group=1&value=200")));
+        break;
+    default:
+        break;
+    }
+
 }
-
-void Camera::MoveDown(){
-   request("53", "200");
-}
-
-void Camera::MoveRight(){
-     request("52", "-200");
-}
-
-void Camera::MoveLeft(){
-    request("52", "200");
-}
-
-QUrl Camera::getStreamUrl()
-{
-    return this->urlStream + "/?action=stream";
-}
-
-void Camera::request(QString direction, QString sens){
-
-    requete.setUrl(QUrl(this->urlStream + "?action=command&dest=0&plugin=0&id=100948"+ direction + "&group=1&value="+ sens));
-    manager->get(requete);
-}
-
 

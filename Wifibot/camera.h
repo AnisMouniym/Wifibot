@@ -18,15 +18,9 @@ private:
     QNetworkRequest requete;
     QNetworkAccessManager *manager;
     QString urlStream;
-    QPushButton *_Up;
-    QPushButton *_Left;
-    QPushButton *_Right;
-    QPushButton *_Down;
+
 
 public slots:
-    void MoveUp();
-    void MoveDown();
-    void MoveRight();
-    void MoveLeft();
+    void move(int a);
 };
 #endif // CAMERA_H
