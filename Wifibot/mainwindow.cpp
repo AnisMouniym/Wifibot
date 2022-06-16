@@ -13,45 +13,11 @@ MainWindow::MainWindow(QWidget *parent)
 
     this->setFixedSize(800,400); //setFixedSize(largeur,hauteur)
     ui->setupUi(this);
-
-// Connexion avec les sliders
-//    connect(movePanel, SIGNAL(updateMove(unsigned char,unsigned char,unsigned char)), Robot, SLOT(move(unsigned char,unsigned char,unsigned char)));
-//    connect(movePanel, SIGNAL(updateVelocityRight(unsigned char)), Robot, SLOT(velocityRight(unsigned char)));
-//    connect(movePanel, SIGNAL(updateVelocityLeft(unsigned char)), Robot, SLOT(velocityLeft(unsigned char)));
-
-// affichage camera (à faire)
-
-// Affichage de la batterie
-        lcdBattery = new QLCDNumber(this);
-        lcdBattery->setDigitCount(3);
-        lcdBattery->setGeometry(QRect(5,5,40,30));
-        lcdBattery->display(0);
-
-}
-
-void MainWindow::updateBattery(quint8 battery)
-{
-    if(battery > 175)
-    {
-        lcdBattery->display(100);
-        lcdBattery->setStyleSheet("background-color: dark; color: rgb(0, 255, 0); border-radius: 10px;border-width: 2px");
-    }
-    else if(battery >100)
-    {
-        lcdBattery->display(100);
-        lcdBattery->setStyleSheet("background-color: dark; color: rgb(255, 0, 0); border-radius: 10px;border-width: 2px");
-    }
-    else
-    {
-        lcdBattery->setStyleSheet("background-color: dark; color: rgb(255, 0, 0); border-radius: 10px;border-width: 2px");
-        lcdBattery->display(battery);
-    }
-
 }
 
 void MainWindow::updateWindows(const QByteArray data)
 {
-    this->updateBattery(data[2]);
+//    this->updateBattery(data[2]);
 }
 
 

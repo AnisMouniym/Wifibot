@@ -52,14 +52,8 @@ private slots:
 private:
     Ui::MainWindow *ui;
     MyRobot *Robot;
-//    QPushButton *_connect;
     Camera *camera;
-//    QWebEngineView* video;
     QLCDNumber *lcdBattery;
-
-//    QPushButton *lFrontSensor;
-//    QPushButton *rFrontSensor;
-//    QPushButton *backSensor;
 
 
     static void updateSensorDisplay(QPushButton *button, quint8 value);
