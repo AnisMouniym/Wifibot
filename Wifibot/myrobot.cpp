@@ -1,6 +1,5 @@
 #include "myrobot.h"
 
-
 MyRobot::MyRobot(QObject *parent) : QObject(parent) {
     DataToSend.resize(9);
     DataToSend[0] = 0xFF;
