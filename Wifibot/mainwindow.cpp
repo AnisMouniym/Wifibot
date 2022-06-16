@@ -11,12 +11,11 @@ MainWindow::MainWindow(QWidget *parent)
     camera = new Camera("http://192.168.1.106:8080", this);
     camera->move(QPoint(560,140));
 
-    this->setFixedSize(800,400); //setFixedSize(largeur,hauteur)
+    this->setFixedSize(1073,625); //setFixedSize(largeur,hauteur)
     ui->setupUi(this);
 
-
 }
-
+//Actualisation du capteurs de vitesse
 void MainWindow::updateSpeed(QByteArray data) {
     long odometryL = ((long)data[8]<<24)+((long)data[7]<<16)+((long)data[6]<<8)+((long)data[5]);
     long odometryR = ((long)data[16]<<24)+((long)data[15]<<16)+((long)data[14]<<8)+((long)data[13]);
@@ -52,6 +51,7 @@ void MainWindow::updateSpeed(QByteArray data) {
     //qDebug() << "Speed: " << speed;
 }
 
+//Actualisation des capteurs de position
 void MainWindow::updateCaptor(QByteArray data) {
     unsigned char irRF = (unsigned char)data[3];
     //unsigned char irRB = (unsigned char)data[4];
@@ -164,4 +164,26 @@ void MainWindow::on_Connexion_clicked()
     else {
         ui->Connexion->setText("Disconnected");
     }
+}
+
+Direction MainWindow::toDirection(double x, double y) {
+    if((x*x)+(y*y) <= (0.1*0.1))
+        return Direction::NONE;
+    else if ((-2*x)>=y && (2*x)>=y)
+        return Direction::FORWARD;
+    else if ((2*x)<=y && (0.5*x)>=y)
+        return Direction::FORWARD_RIGHT;
+    else if ((0.5*x)<=y && (-0.5*x)>=y)
+        return Direction::RIGHT;
+    else if ((-0.5*x)<=y && (-2*x)>=y)
+        return Direction::BACKWARD_RIGHT;
+    else if ((-2*x)<=y && (2*x)<=y)
+        return Direction::BACKWARD;
+    else if ((2*x)>=y && (0.5*x)<=y)
+        return Direction::BACKWARD_LEFT;
+    else if ((0.5*x)>=y && (-0.5*x)<=y)
+        return Direction::LEFT;
+    else if ((-0.5*x)>=y && (-2*x)<=y)
+        return Direction::FORWARD_LEFT;
+    else return Direction::NONE;
 }

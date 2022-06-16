@@ -28,8 +28,6 @@ public slots:
     void readyRead();
     void MyTimerSlot();
     void move(Direction direction = Direction::NONE, quint8 Velocity = 0x00);
-//    void velocityRight(quint8 value);
-//    void velocityLeft(quint8 value);
 
 private:
 

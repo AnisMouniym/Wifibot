@@ -58,5 +58,6 @@ private:
     void updateSpeed(QByteArray data);
     void updateCaptor(QByteArray data);
 
-    Direction toDirection(double x, double y);};
+    Direction toDirection(double x, double y);
+};
 #endif // MAINWINDOW_H
