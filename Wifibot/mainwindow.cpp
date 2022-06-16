@@ -14,44 +14,80 @@ MainWindow::MainWindow(QWidget *parent)
     this->setFixedSize(800,400); //setFixedSize(largeur,hauteur)
     ui->setupUi(this);
 
-// Connexion avec les sliders
-//    connect(movePanel, SIGNAL(updateMove(unsigned char,unsigned char,unsigned char)), Robot, SLOT(move(unsigned char,unsigned char,unsigned char)));
-//    connect(movePanel, SIGNAL(updateVelocityRight(unsigned char)), Robot, SLOT(velocityRight(unsigned char)));
-//    connect(movePanel, SIGNAL(updateVelocityLeft(unsigned char)), Robot, SLOT(velocityLeft(unsigned char)));
-
-// affichage camera (à faire)
-
-// Affichage de la batterie
-        lcdBattery = new QLCDNumber(this);
-        lcdBattery->setDigitCount(3);
-        lcdBattery->setGeometry(QRect(5,5,40,30));
-        lcdBattery->display(0);
 
 }
 
-void MainWindow::updateBattery(quint8 battery)
-{
-    if(battery > 175)
-    {
-        lcdBattery->display(100);
-        lcdBattery->setStyleSheet("background-color: dark; color: rgb(0, 255, 0); border-radius: 10px;border-width: 2px");
+void MainWindow::updateSpeed(QByteArray data) {
+    long odometryL = ((long)data[8]<<24)+((long)data[7]<<16)+((long)data[6]<<8)+((long)data[5]);
+    long odometryR = ((long)data[16]<<24)+((long)data[15]<<16)+((long)data[14]<<8)+((long)data[13]);
+
+    double speedL;
+    if (odometryLBefore<odometryL) {
+        speedL = (odometryL - odometryLBefore) * 3.14 * 0.135 / 0.025;
+        odometryLBefore = odometryL;
     }
-    else if(battery >100)
-    {
-        lcdBattery->display(100);
-        lcdBattery->setStyleSheet("background-color: dark; color: rgb(255, 0, 0); border-radius: 10px;border-width: 2px");
+    else {
+        speedL = (0xFFFFFFFF-odometryLBefore + odometryL) * 3.14 * 0.135 / 0.025;
+        odometryLBefore = odometryL;
     }
-    else
-    {
-        lcdBattery->setStyleSheet("background-color: dark; color: rgb(255, 0, 0); border-radius: 10px;border-width: 2px");
-        lcdBattery->display(battery);
+
+    double speedR;
+    if (odometryRBefore<odometryR) {
+        speedR = (odometryR - odometryRBefore) * 3.14 * 0.135 / 0.025;
+        odometryRBefore = odometryR;
+    }
+    else {
+        speedR = (0xFFFFFFFF-odometryRBefore + odometryR) * 3.14 * 0.135 / 0.025;
+        odometryRBefore = odometryR;
+    }
+
+    double speed = (speedL + speedR) / 20000;
+
+
+    if (speed > 1000000)
+        speed = 0;
+
+    QString textSpeed = QString::number(speed) + " m/s";
+    ui->speed->setText(textSpeed);
+    //qDebug() << "Speed: " << speed;
+}
+
+void MainWindow::updateCaptor(QByteArray data) {
+    unsigned char irRF = (unsigned char)data[3];
+    //unsigned char irRB = (unsigned char)data[4];
+
+    unsigned char irLF = (unsigned char)data[11];
+    unsigned char irLB = (unsigned char)data[12];
+
+    qDebug() << "Captor: " << irLF << "; " << irRF << "; " << irLB;
+
+    if (irLF >= 180) {
+        ui->sensorFL->setValue(100);
+    }
+    else {
+        ui->sensorFL->setValue(irLF * 100 / 180);
+    }
+
+    if (irRF >= 180) {
+        ui->sensorFR->setValue(100);
+    }
+    else {
+        ui->sensorFR->setValue(irRF * 100 / 180);
+    }
+
+    if (irLB >= 180) {
+        ui->sensorBL->setValue(100);
+    }
+    else {
+        ui->sensorBL->setValue(irLB * 100 / 180);
     }
 
 }
 
 void MainWindow::updateWindows(const QByteArray data)
 {
-    this->updateBattery(data[2]);
+    updateSpeed(data);
+    updateCaptor(data);
 }
 
 
